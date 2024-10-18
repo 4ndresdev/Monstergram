@@ -1,3 +1,4 @@
+import { useContext, useEffect } from "react";
 import { Button } from "@nextui-org/button";
 import { Image } from "@nextui-org/image";
 import logo from "../assets/login/logo.webp";
@@ -6,8 +7,37 @@ import grass from "../assets/login/grass.webp";
 import tombstones from "../assets/login/tombstones.webp";
 import tree from "../assets/login/tree.webp";
 import halloweenPhotos from "../assets/login/halloweenPhotos.webp";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import Loading from "../components/Loading";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { signWithGoogle, user, loading } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user?.uid) {
+      navigate("/home");
+      return;
+    }
+  }, [user, navigate, loading]);
+
+  if (loading || user?.uid) {
+    return <Loading />;
+  }
+
+  const handleSignWithGoogle = () => {
+    signWithGoogle()
+      .then(() => {
+        toast.success("Successfully signed in with Google");
+        navigate("/home");
+      })
+      .catch((error) => {
+        toast.error(`Error signing in with Google: ${error.message}`);
+      });
+  };
+
   return (
     <div className="w-screen h-screen grid grid-cols-1 md:grid-cols-2 bg-primary">
       <div className="left md:h-screen w-full order-last md:order-first relative">
@@ -33,6 +63,8 @@ const Login = () => {
               className="mt-5 z-40 bg-white w-full md:w-auto"
               variant="shadow"
               aria-label="Sign in with Google"
+              isLoading={loading}
+              onClick={handleSignWithGoogle}
             >
               <Image
                 alt="Google logo for sign-in button"

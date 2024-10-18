@@ -11,14 +11,21 @@
   },
   "dependencies": {
     "@fontsource-variable/open-sans": "^5.1.0",
+    "@nextui-org/avatar": "^2.0.33",
     "@nextui-org/button": "^2.0.38",
+    "@nextui-org/divider": "^2.0.32",
+    "@nextui-org/dropdown": "^2.1.31",
     "@nextui-org/image": "^2.0.32",
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
+    "@nextui-org/user": "^2.0.34",
+    "firebase": "^10.14.1",
     "framer-motion": "^11.11.7",
     "lottie-react": "^2.4.0",
+    "lucide-react": "^0.453.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.27.0"
   },
   "devDependencies": {
