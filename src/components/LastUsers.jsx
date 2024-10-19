@@ -21,7 +21,7 @@ const LastUsers = () => {
     const recentUsersQuery = query(
       usersRef,
       orderByChild("createdAt"),
-      limitToLast(3)
+      limitToLast(4)
     );
     const unsubscribe = onValue(recentUsersQuery, (snapshot) => {
       const data = snapshot.val();
@@ -42,7 +42,7 @@ const LastUsers = () => {
       <Lottie
         animationData={spider}
         loop={false}
-        className="absolute translate-y-[-5rem] translate-x-10"
+        className="absolute translate-y-[-10rem] lg:translate-y-[-5rem] translate-x-10"
       />
       <h2 className="text-lg font-semibold">Recent users</h2>
       <ul role="list" className="mt-2 flex flex-col gap-2">

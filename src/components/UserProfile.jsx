@@ -18,7 +18,7 @@ const UserProfile = () => {
           className="w-full object-cover rounded-t-lg"
         />
         <p className="text-center text-sm text-gray-300 absolute bottom-0 z-20 right-0 m-1">
-          <span className="font-bold">0</span> Boos! 👻
+          <span className="font-bold">0</span> Tricks! 🎃
         </p>
       </div>
       <Avatar
@@ -30,7 +30,9 @@ const UserProfile = () => {
       />
       <div className="body px-5 pt-3 pb-10">
         <h2 className="text-xl font-semibold text-center">{displayName}</h2>
-        <p className="text-center text-gray-400">{emailFormatter(email)}</p>
+        <p className="text-sm text-slate-500 truncate text-center">
+          {emailFormatter(email)}
+        </p>
         <p className="text-center text-sm text-gray-300 mt-2">
           This profile is so full of mystery that even ghosts are scared of it!
           🎃
