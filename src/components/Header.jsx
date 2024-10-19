@@ -7,13 +7,16 @@ const Header = () => {
   return (
     <div className="w-full py-3 border-b border-gray-800">
       <div className="container mx-auto flex justify-between items-center text-white">
-        <Image
-          isBlurred
-          width={40}
-          height={40}
-          src={logo}
-          alt="Halloween logo"
-        />
+        <div className="flex items-center gap-2">
+          <Image
+            isBlurred
+            width={35}
+            height={35}
+            src={logo}
+            alt="Halloween logo"
+          />
+          <h2 className="translate-y-0.5 font-semibold">MonsterGram</h2>
+        </div>
         <div className="flex gap-4 items-center">
           <NavigationBar />
           <div className="h-8 border-l border-gray-800 hidden md:flex"></div>
