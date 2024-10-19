@@ -5,7 +5,7 @@ import NavigationBar from "./NavigationBar";
 
 const Header = () => {
   return (
-    <div className="w-full py-3 border-b border-gray-800">
+    <div className="w-full py-3 border-b border-gray-800 z-50 sticky top-0 bg-gray-900">
       <div className="container mx-auto flex justify-between items-center text-white">
         <div className="flex items-center gap-2">
           <Image

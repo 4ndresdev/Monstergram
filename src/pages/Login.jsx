@@ -36,6 +36,7 @@ const Login = () => {
           displayName: response.user.displayName,
           email: response.user.email,
           photoURL: response.user.photoURL,
+          firstPost: false,
         };
 
         const db = getDatabase();
