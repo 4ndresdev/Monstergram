@@ -9,14 +9,12 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { emailFormatter, displayNameFormatter } from "../utils/string.format";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { signOut, user } = useContext(AuthContext);
   const { email, displayName, photoURL } = user;
-
-  const emailTruncated = `@${email.split("@")[0]}`;
-  const displayNameTruncated = `${displayName.slice(0, 10)}...`;
 
   const handleSignOut = () => {
     signOut()
@@ -42,8 +40,8 @@ const Profile = () => {
               style: { marginRight: "0.2rem" },
             }}
             className="transition-transform"
-            description={emailTruncated}
-            name={displayNameTruncated}
+            description={emailFormatter(email)}
+            name={displayNameFormatter(displayName)}
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="User Actions" variant="flat">
