@@ -13,8 +13,8 @@ const Home = () => {
         <div className="col-span-12 lg:col-span-6 bg-slate-400 mt-5">
           <Post />
         </div>
-        <div className="hidden lg:flex lg:col-span-3 bg-slate-400 max-h-80 mt-5">
-          sdfsd
+        <div className="hidden lg:flex lg:col-span-3 max-h-80 sticky top-0">
+          <UserProfile />
         </div>
       </div>
     </>

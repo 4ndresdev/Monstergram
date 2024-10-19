@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
 
   const signWithGoogle = async () => {
     setLoading(true);
-    await signInWithPopup(auth, googleProvider);
+    return await signInWithPopup(auth, googleProvider);
   };
 
   const signOut = async () => {

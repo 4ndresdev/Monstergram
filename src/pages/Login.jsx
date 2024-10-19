@@ -11,6 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Loading from "../components/Loading";
+import { getDatabase, ref, child, get, set } from "firebase/database";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,9 +30,30 @@ const Login = () => {
 
   const handleSignWithGoogle = () => {
     signWithGoogle()
-      .then(() => {
-        toast.success("Successfully signed in with Google");
-        navigate("/home");
+      .then((response) => {
+        const user = {
+          uid: response.user.uid,
+          displayName: response.user.displayName,
+          email: response.user.email,
+          photoURL: response.user.photoURL,
+        };
+
+        const db = getDatabase();
+        const dbRef = ref(db);
+
+        get(child(dbRef, `users/${user.uid}`))
+          .then((snapshot) => {
+            if (!snapshot.exists()) {
+              set(ref(db, "users/" + user.uid), user);
+            }
+          })
+          .catch((error) => {
+            toast.error(`Error fetching user data: ${error.message}`);
+          })
+          .finally(() => {
+            toast.success("Successfully signed in with Google");
+            navigate("/home");
+          });
       })
       .catch((error) => {
         toast.error(`Error signing in with Google: ${error.message}`);
