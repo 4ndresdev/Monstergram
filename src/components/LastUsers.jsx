@@ -9,6 +9,8 @@ import {
   orderByChild,
   limitToLast,
 } from "firebase/database";
+import Lottie from "lottie-react";
+import spider from "../assets/lotties/spider.json";
 
 const LastUsers = () => {
   const [users, setUsers] = useState([]);
@@ -36,7 +38,12 @@ const LastUsers = () => {
   }, []);
 
   return (
-    <div className="w-full bg-gray-900 text-white rounded-lg mt-5 p-3 border-4 border-gray-800">
+    <div className="w-full bg-gray-900 text-white rounded-lg mt-5 p-3 border-4 border-gray-800 relative overflow-hidden">
+      <Lottie
+        animationData={spider}
+        loop={false}
+        className="absolute translate-y-[-5rem] translate-x-10"
+      />
       <h2 className="text-lg font-semibold">Recent users</h2>
       <ul role="list" className="mt-2 flex flex-col gap-2">
         {users.map((user) => (
