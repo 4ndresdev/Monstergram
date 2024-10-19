@@ -44,7 +44,10 @@ const Login = () => {
         get(child(dbRef, `users/${user.uid}`))
           .then((snapshot) => {
             if (!snapshot.exists()) {
-              set(ref(db, "users/" + user.uid), user);
+              set(ref(db, "users/" + user.uid), {
+                ...user,
+                createdAt: new Date().toISOString(),
+              });
             }
           })
           .catch((error) => {
