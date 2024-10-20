@@ -49,7 +49,7 @@ const Profile = () => {
             <p className="font-bold">Signed in as</p>
             <p className="font-bold">{email}</p>
           </DropdownItem>
-          <DropdownItem key="settings">My Settings</DropdownItem>
+          <DropdownItem key="settings">My Profile</DropdownItem>
           <DropdownItem key="logout" color="danger" onClick={handleSignOut}>
             Log Out
           </DropdownItem>
