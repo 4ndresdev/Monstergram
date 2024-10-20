@@ -53,7 +53,7 @@ const LastUsers = () => {
           >
             <Avatar isBordered color="default" src={user.photoURL} size="sm" />
             <div className="ml-3 overflow-hidden">
-              <p className="text-sm font-medium text-white">
+              <p className="text-sm font-medium text-white truncate">
                 {user.displayName}
               </p>
               <p className="text-sm text-slate-500 truncate">
