@@ -1,16 +1,24 @@
 import { useState } from "react";
-import FileUpload from "../components/FileUpload";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@nextui-org/button";
 import { useNavigate } from "react-router-dom";
+import FileUpload from "../components/FileUpload";
+import PreviewPost from "../components/PreviewPost";
+import useBeforeUnload from "../hooks/useBeforeUnload";
 
 const Generate = () => {
   const navigate = useNavigate();
   const [fileSelected, setFileSelected] = useState({});
+
+  useBeforeUnload(fileSelected);
   console.log(fileSelected);
 
   const handleBack = () => {
     navigate("/home");
+  };
+
+  const handleReset = () => {
+    setFileSelected({});
   };
 
   return (
@@ -27,7 +35,14 @@ const Generate = () => {
         </Button>
       </div>
       <div className="inset-0 h-full w-full flex justify-center items-center right col-span-12 md:col-span-8 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
-        <FileUpload setFileSelected={setFileSelected} />
+        {fileSelected?.name ? (
+          <PreviewPost
+            previewImage={URL.createObjectURL(fileSelected)}
+            handleReset={handleReset}
+          />
+        ) : (
+          <FileUpload setFileSelected={setFileSelected} />
+        )}
       </div>
     </div>
   );

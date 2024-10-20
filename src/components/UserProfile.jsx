@@ -13,7 +13,7 @@ const UserProfile = () => {
         <Image
           width="100%"
           height="100%"
-          alt="NextUI hero Image"
+          alt="User profile image"
           src="https://res.cloudinary.com/drgzigtsi/image/upload/c_crop,ar_16:9,e_improve/v1729301633/pexels-aleksandar-cvetanovic-605352-1480861_no0t4z.jpg"
           className="w-full object-cover rounded-t-lg"
         />
