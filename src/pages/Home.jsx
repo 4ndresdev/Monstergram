@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div className="relative">
       <Header />
-      <div className="container grid gap-4 grid-cols-12 mb-5 lg:mb-0">
+      <div className="container grid gap-4 grid-cols-12 mb-5">
         <div className="col-span-12 lg:flex lg:col-span-3 max-h-80 order-1">
           <UserProfile />
         </div>
