@@ -55,9 +55,10 @@ const Post = ({ post }) => {
             shadow="sm"
             radius="lg"
             width="100%"
-            alt="Image"
+            alt="Post image"
             className="w-full object-cover h-96"
             src={post.image}
+            loading="lazy"
           />
         </CardBody>
         <CardFooter className="px-3 text-medium flex flex-col items-start gap-5">
