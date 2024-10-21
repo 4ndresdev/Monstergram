@@ -7,9 +7,18 @@ import { AuthContext } from "../context/AuthContext";
 import { emailFormatter, displayNameFormatter } from "../utils/string.format";
 import { X } from "lucide-react";
 
-const PreviewPost = ({ previewImage, processing, handleReset }) => {
+const PreviewPost = ({
+  previewImage,
+  processing,
+  handleReset,
+  handleSubmit,
+  postButtonRef,
+  loading,
+}) => {
   const { user } = useContext(AuthContext);
   const { email, displayName, photoURL } = user;
+  const diableCreatePost = !previewImage || processing;
+
   return (
     <div className="w-full h-full flex justify-center items-center">
       <div>
@@ -57,9 +66,12 @@ const PreviewPost = ({ previewImage, processing, handleReset }) => {
           className="mt-3 bg-orange-600 shadow-lg shadow-orange-600 text-white"
           variant="shadow"
           fullWidth
-          isDisabled
+          isDisabled={diableCreatePost}
+          onClick={handleSubmit}
+          ref={postButtonRef}
+          isLoading={loading}
         >
-          Public post 👻
+          Create post 👻
         </Button>
       </div>
     </div>
@@ -70,6 +82,9 @@ PreviewPost.propTypes = {
   previewImage: PropTypes.string.isRequired,
   processing: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  postButtonRef: PropTypes.object,
+  loading: PropTypes.bool,
 };
 
 export default PreviewPost;

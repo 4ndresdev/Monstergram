@@ -1,28 +1,35 @@
-import { useContext, useState, useRef } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Image } from "@nextui-org/image";
 import { User } from "@nextui-org/user";
 import confetti from "canvas-confetti";
-import { AuthContext } from "../context/AuthContext";
 import { displayNameFormatter, emailFormatter } from "../utils/string.format";
 import Like from "./Like";
 import { useDisclosure } from "@nextui-org/modal";
 import PreviewImage from "./PreviewImage";
+import useGenerate from "../hooks/useGenerate";
+import { AuthContext } from "../context/AuthContext";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 const Post = ({ post }) => {
+  const { email, displayName, photoURL } = post.user;
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isLiked, setIsLiked] = useState(false);
-  const [totalLikes, setTotalLikes] = useState(0);
-  const { user } = useContext(AuthContext);
+  const [totalLikes, setTotalLikes] = useState(Object.keys(post.likes).length);
   const buttonLikeRef = useRef(null);
+  const { addUserLike, removeUserLike } = useGenerate();
+  const { user } = useContext(AuthContext);
 
-  const { email, displayName, photoURL } = user;
-
-  const handleLikeToggle = () => {
+  const handleLikeToggle = async () => {
     setIsLiked((liked) => !liked);
     if (isLiked) {
       setTotalLikes((likes) => likes - 1);
+      await removeUserLike(post.id, user.uid);
     } else {
       const rect = buttonLikeRef.current.getBoundingClientRect();
       let originX = (rect.x + 0.5 * rect.width) / window.innerWidth;
@@ -31,15 +38,23 @@ const Post = ({ post }) => {
       let pumpkin = confetti.shapeFromText({ text: "🎃", scalar });
       let bat = confetti.shapeFromText({ text: "💀", scalar });
       let ghost = confetti.shapeFromText({ text: "👻", scalar });
+
       confetti({
         particleCount: 100,
         spread: 40,
         origin: { y: originY, x: originX },
         shapes: [pumpkin, bat, ghost],
       });
+
       setTotalLikes((likes) => likes + 1);
+      await addUserLike(post.id, user.uid);
     }
   };
+
+  useEffect(() => {
+    setIsLiked(post.likes?.[user.uid] || false);
+    setTotalLikes(Object.keys(post.likes).length);
+  }, [user, post.likes]);
 
   return (
     <>
@@ -50,7 +65,7 @@ const Post = ({ post }) => {
         isPressable
         onPress={onOpen}
       >
-        <CardBody className="p-0 cursor-pointer relative h-96 max-h-96 overflow-hidden">
+        <CardBody className="p-0 cursor-pointer relative h-96 max-h-96 overflow-hidden flex items-start justify-center">
           <Image
             shadow="sm"
             radius="lg"
@@ -84,7 +99,9 @@ const Post = ({ post }) => {
               description={emailFormatter(email)}
               name={displayNameFormatter(displayName)}
             />
-            <span className="text-sm text-default-400">A few minutes ago</span>
+            <span className="text-sm text-default-400">
+              {dayjs(post.timestamp).fromNow()}
+            </span>
           </div>
         </CardFooter>
       </Card>
@@ -99,11 +116,20 @@ const Post = ({ post }) => {
 
 Post.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.number,
-    title: PropTypes.string,
-    prompt: PropTypes.string,
-    image: PropTypes.string,
-  }),
+    id: PropTypes.string.isRequired,
+    prompt: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    likes: PropTypes.object,
+    timestamp: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date),
+    ]),
+    user: PropTypes.shape({
+      email: PropTypes.string.isRequired,
+      displayName: PropTypes.string.isRequired,
+      photoURL: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default Post;
