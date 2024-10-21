@@ -50,11 +50,12 @@ const Post = ({ post }) => {
         isPressable
         onPress={onOpen}
       >
-        <CardBody className="p-0 cursor-pointer relative max-h-96 overflow-hidden">
+        <CardBody className="p-0 cursor-pointer relative h-96 max-h-96 overflow-hidden">
           <Image
             shadow="sm"
             radius="lg"
             width="100%"
+            height="100%"
             alt="Post image"
             className="w-full object-cover"
             src={post.image}
