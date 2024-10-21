@@ -20,7 +20,7 @@ const LastUsers = () => {
     const usersRef = ref(db, "users/");
     const recentUsersQuery = query(
       usersRef,
-      orderByChild("createdAt"),
+      orderByChild("timestamp"),
       limitToLast(4)
     );
     const unsubscribe = onValue(recentUsersQuery, (snapshot) => {

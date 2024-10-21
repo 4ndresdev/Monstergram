@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@nextui-org/button";
 import { useNavigate } from "react-router-dom";
@@ -6,16 +6,30 @@ import FileUpload from "../components/FileUpload";
 import PreviewPost from "../components/PreviewPost";
 import useBeforeUnload from "../hooks/useBeforeUnload";
 import useCloudinary from "../hooks/useCloudinary";
+import useGenerate from "../hooks/useGenerate";
 import GenerateForm from "../components/GenerateForm";
+import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
 const Generate = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [fileSelected, setFileSelected] = useState({});
   const [previewImage, setPreviewImage] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const { user } = useContext(AuthContext);
   const { transformAspectRatio } = useCloudinary();
+  const { createPost } = useGenerate();
+
+  const postButtonRef = useRef(null);
+
   useBeforeUnload(fileSelected);
+
+  const handleReset = () => {
+    setFileSelected({});
+    setPreviewImage(null);
+    postButtonRef.current.disable = false;
+  };
 
   const handleBack = () => {
     if (previewImage) {
@@ -23,8 +37,7 @@ const Generate = () => {
         "Are you sure you want to leave? Your image will be lost."
       );
       if (confirm) {
-        setFileSelected({});
-        setPreviewImage(null);
+        handleReset();
         navigate("/home");
       }
     } else {
@@ -32,9 +45,30 @@ const Generate = () => {
     }
   };
 
-  const handleReset = () => {
-    setFileSelected({});
-    setPreviewImage(null);
+  const handleSubmit = async () => {
+    setLoading(true);
+    postButtonRef.current.disable = true;
+    const { public_id, secure_url } = fileSelected;
+    const dataPost = {
+      prompt: "Create a post",
+      transformed_image_url: previewImage,
+      public_id,
+      secure_url,
+      userId: user.uid,
+      timestamp: new Date().toISOString(),
+      likes: {},
+    };
+
+    try {
+      await createPost(dataPost);
+      toast.success("Post created successfully!");
+      navigate("/home");
+    } catch {
+      toast.error("Ups, something went wrong. Please try again.");
+    } finally {
+      handleReset();
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -49,8 +83,7 @@ const Generate = () => {
         setPreviewImage(secure_url);
       } catch (error) {
         toast.error(error.message);
-        setPreviewImage(null);
-        setFileSelected({});
+        handleReset();
       } finally {
         setProcessing(false);
       }
@@ -79,6 +112,9 @@ const Generate = () => {
             previewImage={previewImage}
             processing={processing}
             handleReset={handleReset}
+            handleSubmit={handleSubmit}
+            postButtonRef={postButtonRef}
+            loading={loading}
           />
         ) : (
           <FileUpload setFileSelected={setFileSelected} />

@@ -1,12 +1,43 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Image } from "@nextui-org/image";
 import { Avatar } from "@nextui-org/avatar";
 import { AuthContext } from "../context/AuthContext";
 import { emailFormatter } from "../utils/string.format";
+import { getDatabase, ref, onValue, query } from "firebase/database";
 
 const UserProfile = () => {
   const { user } = useContext(AuthContext);
-  const { email, displayName, photoURL } = user;
+  const { email, displayName, photoURL, uid } = user;
+  const [tricks, setTricks] = useState(0);
+
+  useEffect(() => {
+    const db = getDatabase();
+    const usersRef = ref(db, "posts/");
+    const recentUsersQuery = query(usersRef);
+    const unsubscribe = onValue(recentUsersQuery, (snapshot) => {
+      const data = snapshot.val();
+      let count = 0;
+
+      for (let key in data) {
+        if (data[key]?.likes) {
+          if (
+            data[key]?.likes &&
+            data[key].likes[uid] &&
+            data[key].userId === uid
+          ) {
+            count++;
+          }
+        }
+      }
+
+      setTricks(count);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [uid]);
+
   return (
     <div className="bg-gray-900 text-white rounded-lg mt-5 border-4 border-gray-800">
       <div className="w-full h-20 flex justify-center items-center overflow-hidden rounded-t-lg relative">
@@ -18,7 +49,7 @@ const UserProfile = () => {
           className="w-full object-cover rounded-t-lg"
         />
         <p className="text-center text-sm text-gray-300 absolute bottom-0 z-20 right-0 m-1">
-          <span className="font-bold">0</span> Tricks! 🎃
+          <span className="font-bold">{tricks}</span> Tricks! 🎃
         </p>
       </div>
       <Avatar

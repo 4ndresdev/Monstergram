@@ -15,7 +15,9 @@ const Header = () => {
             src={logo}
             alt="Halloween logo"
           />
-          <h2 className="translate-y-0.5 font-semibold">MonsterGram</h2>
+          <h2 className="text-sm md:text-lg translate-y-0.5 font-semibold">
+            MonsterGram
+          </h2>
         </div>
         <div className="flex gap-4 items-center">
           <NavigationBar />

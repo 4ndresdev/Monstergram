@@ -47,7 +47,7 @@ const Login = () => {
             if (!snapshot.exists()) {
               set(ref(db, "users/" + user.uid), {
                 ...user,
-                createdAt: new Date().toISOString(),
+                timestamp: new Date().toISOString(),
               });
             }
           })
