@@ -6,6 +6,7 @@ import FileUpload from "../components/FileUpload";
 import PreviewPost from "../components/PreviewPost";
 import useBeforeUnload from "../hooks/useBeforeUnload";
 import useCloudinary from "../hooks/useCloudinary";
+import GenerateForm from "../components/GenerateForm";
 import toast from "react-hot-toast";
 
 const Generate = () => {
@@ -17,7 +18,18 @@ const Generate = () => {
   useBeforeUnload(fileSelected);
 
   const handleBack = () => {
-    navigate("/home");
+    if (previewImage) {
+      const confirm = window.confirm(
+        "Are you sure you want to leave? Your image will be lost."
+      );
+      if (confirm) {
+        setFileSelected({});
+        setPreviewImage(null);
+        navigate("/home");
+      }
+    } else {
+      navigate("/home");
+    }
   };
 
   const handleReset = () => {
@@ -49,7 +61,7 @@ const Generate = () => {
 
   return (
     <div className="w-screen h-screen grid grid-cols-1 md:grid-cols-12">
-      <div className="left w-full col-span-12 md:col-span-4 p-5">
+      <div className="left w-full col-span-12 md:col-span-4 xl:col-span-3 p-5">
         <Button
           isIconOnly
           color="danger"
@@ -59,8 +71,9 @@ const Generate = () => {
         >
           <ArrowLeft />
         </Button>
+        <GenerateForm />
       </div>
-      <div className="inset-0 h-full w-full flex justify-center items-center right col-span-12 md:col-span-8 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+      <div className="inset-0 h-full w-full flex justify-center items-center right col-span-12 md:col-span-8 xl:col-span-9 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
         {previewImage ? (
           <PreviewPost
             previewImage={previewImage}

@@ -54,12 +54,12 @@ const PreviewPost = ({ previewImage, processing, handleReset }) => {
           </p>
         </div>
         <Button
-          className="mt-3 bg-orange-600 text-white"
+          className="mt-3 bg-orange-600 shadow-lg shadow-orange-600 text-white"
           variant="shadow"
           fullWidth
           isDisabled
         >
-          Download image
+          Public post 👻
         </Button>
       </div>
     </div>

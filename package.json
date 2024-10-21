@@ -19,7 +19,9 @@
     "@nextui-org/divider": "^2.0.32",
     "@nextui-org/dropdown": "^2.1.31",
     "@nextui-org/image": "^2.0.32",
+    "@nextui-org/input": "^2.2.5",
     "@nextui-org/modal": "^2.0.41",
+    "@nextui-org/switch": "^2.0.34",
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
     "@nextui-org/user": "^2.0.34",
@@ -31,6 +33,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.10",
+    "react-hook-form": "^7.53.1",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.27.0"
   },
