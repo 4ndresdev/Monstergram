@@ -2,10 +2,12 @@ import PropTypes from "prop-types";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
+import useCloudinary from "../hooks/useCloudinary";
 
 const FileUpload = ({ setFileSelected }) => {
+  const { uploadImage, loading } = useCloudinary();
   const onDrop = useCallback(
-    (acceptedFiles, fileRejections) => {
+    async (acceptedFiles, fileRejections) => {
       if (fileRejections.length) {
         const { message } = fileRejections[0].errors[0];
         toast.error(message, {
@@ -13,10 +15,14 @@ const FileUpload = ({ setFileSelected }) => {
         });
         return;
       }
-
-      setFileSelected(acceptedFiles[0]);
+      const imageUploaded = await uploadImage(acceptedFiles[0]).catch(
+        (error) => {
+          toast.error(error.message);
+        }
+      );
+      setFileSelected(imageUploaded);
     },
-    [setFileSelected]
+    [setFileSelected, uploadImage]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -26,6 +32,16 @@ const FileUpload = ({ setFileSelected }) => {
       "image/jpeg": [".jpg", ".jpeg"],
     },
   });
+
+  if (loading) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center">
+        <p className="text-md text-slate-500">
+          Uploading the next victim... 🩸📸
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div

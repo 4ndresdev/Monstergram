@@ -7,13 +7,15 @@ import { AuthContext } from "../context/AuthContext";
 import { emailFormatter, displayNameFormatter } from "../utils/string.format";
 import { X } from "lucide-react";
 
-const PreviewPost = ({ previewImage, handleReset }) => {
+const PreviewPost = ({ previewImage, processing, handleReset }) => {
   const { user } = useContext(AuthContext);
   const { email, displayName, photoURL } = user;
   return (
     <div className="w-full h-full flex justify-center items-center">
       <div>
-        <h1 className="mb-5 text-md text-slate-500">Preview post</h1>
+        <h1 className="mb-5 text-md text-slate-500">
+          {processing ? "Proccesing photo..." : "Preview post"}
+        </h1>
         <div className="relative">
           <div className="header w-full absolute z-20 px-5 mt-5 text-white flex justify-between items-center">
             <User
@@ -41,6 +43,7 @@ const PreviewPost = ({ previewImage, handleReset }) => {
           </div>
           <Image
             width={400}
+            height={600}
             alt="Preview image"
             src={previewImage}
             isBlurred
@@ -65,6 +68,7 @@ const PreviewPost = ({ previewImage, handleReset }) => {
 
 PreviewPost.propTypes = {
   previewImage: PropTypes.string.isRequired,
+  processing: PropTypes.bool.isRequired,
   handleReset: PropTypes.func.isRequired,
 };
 
