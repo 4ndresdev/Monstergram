@@ -25,8 +25,12 @@
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
     "@nextui-org/user": "^2.0.34",
+    "axios": "^1.7.7",
     "canvas-confetti": "^1.9.3",
+    "cors": "^2.8.5",
     "dayjs": "^1.11.13",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
     "firebase": "^10.14.1",
     "framer-motion": "^11.11.7",
     "lottie-react": "^2.4.0",
@@ -36,7 +40,8 @@
     "react-dropzone": "^14.2.10",
     "react-hook-form": "^7.53.1",
     "react-hot-toast": "^2.4.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "replicate": "^1.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",

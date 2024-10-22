@@ -17,6 +17,8 @@ const Generate = () => {
   const [fileSelected, setFileSelected] = useState({});
   const [previewImage, setPreviewImage] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [prompt, setPrompt] = useState("");
+  const [wasGenerated, setWasGenerated] = useState(false);
   const { user } = useContext(AuthContext);
   const { transformAspectRatio } = useCloudinary();
   const { createPost } = useGenerate();
@@ -50,7 +52,7 @@ const Generate = () => {
     postButtonRef.current.disable = true;
     const { public_id, secure_url } = fileSelected;
     const dataPost = {
-      prompt: "Create a post",
+      prompt: prompt,
       transformed_image_url: previewImage,
       public_id,
       secure_url,
@@ -92,6 +94,51 @@ const Generate = () => {
     processImage();
   }, [fileSelected, transformAspectRatio]);
 
+  const handleInspireMe = () => {
+    const url = "https://api.groq.com/openai/v1/chat/completions";
+    const apiKey = import.meta.env.VITE_GROQ_CLOUD_API_KEY; // Sustituye esto por tu API Key
+
+    const requestData = {
+      messages: [
+        {
+          role: "system",
+          content:
+            "Eres un asistente creativo que ayuda a los usuarios a transformar imágenes o generar contenido con temática de Halloween. Siempre que el usuario mencione Halloween, debes generar una descripción o prompt que contenga elementos típicos de Halloween, tales como calabazas, fantasmas, niebla, escenarios oscuros, criaturas terroríficas, o ambientes espeluznantes. Asegúrate de que las respuestas incluyan detalles visuales que evoquen un sentimiento de misterio, terror o suspenso. recuerda que tiene que ser algo muy breve de menos de 30 palabras ademas, no hagas preguntas",
+        },
+        {
+          role: "user",
+          content: "Halloween",
+        },
+      ],
+      model: "llama3-8b-8192",
+      temperature: 1,
+      max_tokens: 1024,
+      top_p: 1,
+      stream: false,
+      stop: null,
+    };
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const prompt = data.choices[0].message.content.replaceAll('"', "");
+        setPrompt(prompt);
+      })
+      .catch((error) => toast.error(error.message));
+  };
+
+  const handleGenerate = async () => {
+    setWasGenerated(true);
+    console.log("Generating...");
+  };
+
   return (
     <div className="w-screen h-screen grid grid-cols-1 md:grid-cols-12">
       <div className="left w-full col-span-12 md:col-span-4 xl:col-span-3 p-5">
@@ -104,7 +151,14 @@ const Generate = () => {
         >
           <ArrowLeft />
         </Button>
-        <GenerateForm />
+        <GenerateForm
+          setPrompt={setPrompt}
+          prompt={prompt}
+          previewImage={previewImage}
+          handleInspireMe={handleInspireMe}
+          handleGenerate={handleGenerate}
+          processing={processing}
+        />
       </div>
       <div className="inset-0 h-full w-full flex justify-center items-center right col-span-12 md:col-span-8 xl:col-span-9 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
         {previewImage ? (
@@ -115,6 +169,7 @@ const Generate = () => {
             handleSubmit={handleSubmit}
             postButtonRef={postButtonRef}
             loading={loading}
+            wasGenerated={wasGenerated}
           />
         ) : (
           <FileUpload setFileSelected={setFileSelected} />

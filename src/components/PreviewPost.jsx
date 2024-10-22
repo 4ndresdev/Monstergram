@@ -14,10 +14,11 @@ const PreviewPost = ({
   handleSubmit,
   postButtonRef,
   loading,
+  wasGenerated,
 }) => {
   const { user } = useContext(AuthContext);
   const { email, displayName, photoURL } = user;
-  const diableCreatePost = !previewImage || processing;
+  const diableCreatePost = !wasGenerated;
 
   return (
     <div className="w-full h-full flex justify-center items-center">
@@ -85,6 +86,7 @@ PreviewPost.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   postButtonRef: PropTypes.object,
   loading: PropTypes.bool,
+  wasGenerated: PropTypes.bool,
 };
 
 export default PreviewPost;
