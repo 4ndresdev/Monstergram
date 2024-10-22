@@ -1,72 +1,65 @@
+import PropTypes from "prop-types";
 import { Button } from "@nextui-org/button";
-import { Image } from "@nextui-org/image";
 import { Textarea } from "@nextui-org/input";
 import { WandSparkles } from "lucide-react";
-import realist from "../assets/generate/realist.jpeg";
-import pixar from "../assets/generate/pixar.jpg";
-import { Switch } from "@nextui-org/switch";
 
-const GenerateForm = () => {
+const GenerateForm = ({
+  setPrompt,
+  prompt,
+  previewImage,
+  handleInspireMe,
+  handleGenerate,
+  processing,
+}) => {
+  const bewitchingEnableButton = !previewImage || !prompt || processing;
+  const inputsDisabled = !previewImage || processing;
   return (
     <div className="mt-5 text-lg flex flex-col gap-6">
       <h1 className="text-xl text-white font-bold">Create from scratch</h1>
       <div>
         <Textarea
           variant="filled"
-          label="Describe your idea"
+          label="Write your spell 🕯️"
           className="max-w-full"
           classNames={{
-            inputWrapper: "bg-gray-900 hover:bg-gray-900 active:bg-gray-900",
+            inputWrapper:
+              "bg-gray-900 text-white hover:text-gray-900 active:text-gray-900",
           }}
+          onChange={(e) => setPrompt(e.target.value)}
+          value={prompt}
+          isDisabled={inputsDisabled}
         />
-        <div className="flex justify-end mt-2">
-          <Button size="sm" variant="flat" color="warning">
+        <div className="flex justify-end mt-3">
+          <Button
+            size="sm"
+            variant="flat"
+            color="warning"
+            onClick={handleInspireMe}
+            isDisabled={inputsDisabled}
+          >
             <WandSparkles size={15} />
             Inspire me
           </Button>
         </div>
       </div>
-      <h2 className="text-md text-white">Choose a style 🎃</h2>
-      <div className="flex flex-nowrap gap-3">
-        <div className="w-full max-w-32 flex justify-center items-center overflow-hidden cursor-pointer">
-          <Image
-            width="auto"
-            alt="NextUI hero Image"
-            className="object-cover"
-            src={realist}
-          />
-        </div>
-        <div className="w-full max-w-32 flex justify-center items-center overflow-hidden cursor-pointer">
-          <Image
-            width="auto"
-            alt="NextUI hero Image"
-            className="object-cover"
-            src={pixar}
-          />
-        </div>
-      </div>
-      <Switch
+      <Button
         color="warning"
-        className="text-white text-sm"
-        classNames={{ label: "text-white text-sm", wrapper: "bg-gray-900" }}
+        isDisabled={bewitchingEnableButton}
+        onClick={handleGenerate}
       >
-        Remove something on the image
-      </Switch>
-      <Textarea
-        variant="filled"
-        label="What do you want to remove?"
-        className="max-w-full"
-        minRows={2}
-        classNames={{
-          inputWrapper: "bg-gray-900 hover:bg-gray-900 active:bg-gray-900",
-        }}
-      />
-      <Button color="warning">
-        <WandSparkles size={15} />
-        Generate
+        {processing ? "Proccesing..." : "💀 Bewitching image"}
       </Button>
     </div>
   );
+};
+
+GenerateForm.propTypes = {
+  setPrompt: PropTypes.func.isRequired,
+  prompt: PropTypes.string,
+  previewImage: PropTypes.string,
+  handleInspireMe: PropTypes.func.isRequired,
+  handleGenerate: PropTypes.func.isRequired,
+  processing: PropTypes.bool.isRequired,
 };
 
 export default GenerateForm;
