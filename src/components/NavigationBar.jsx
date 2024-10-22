@@ -13,7 +13,7 @@ const NavigationBar = () => {
       <Button
         size="sm"
         radius="full"
-        className="bg-orange-600 text-white fixed bottom-0 inset-x-0 mx-auto w-40 mb-6 md:relative md:bottom-auto md:mx-0 md:mb-0"
+        className="bg-orange-600 text-white fixed bottom-0 inset-x-0 mx-auto w-48 p-5 mb-6 md:p-0 md:relative md:bottom-auto md:mx-0 md:mb-0"
         onClick={() => handleNavigate("/generate")}
       >
         👻 Create Spooky Image
