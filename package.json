@@ -12,6 +12,7 @@
   "dependencies": {
     "@cloudinary/react": "^1.13.0",
     "@cloudinary/url-gen": "^1.21.0",
+    "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "@fontsource-variable/open-sans": "^5.1.0",
     "@nextui-org/avatar": "^2.0.33",
     "@nextui-org/button": "^2.0.38",
