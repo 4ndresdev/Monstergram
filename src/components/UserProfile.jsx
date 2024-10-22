@@ -20,12 +20,8 @@ const UserProfile = () => {
 
       for (let key in data) {
         if (data[key]?.likes) {
-          if (
-            data[key]?.likes &&
-            data[key].likes[uid] &&
-            data[key].userId === uid
-          ) {
-            count++;
+          if (data[key]?.likes && data[key].userId === uid) {
+            count += Object.keys(data[key].likes).length;
           }
         }
       }
