@@ -135,8 +135,32 @@ const Generate = () => {
   };
 
   const handleGenerate = async () => {
-    setWasGenerated(true);
-    console.log("Generating...");
+    setProcessing(true);
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        imageUrl: previewImage,
+        prompt: prompt,
+      }),
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(
+        "https://monstergram-production.up.railway.app/process-image",
+        requestOptions
+      );
+      const data = await response.json();
+      setWasGenerated(true);
+      setPreviewImage(data.output[1]);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setProcessing(false);
+    }
   };
 
   return (

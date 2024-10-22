@@ -21,7 +21,7 @@ const PreviewPost = ({
   const diableCreatePost = !wasGenerated;
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
+    <div className="w-full h-full flex justify-center items-center p-5">
       <div>
         <h1 className="mb-5 text-md text-slate-500">
           {processing ? "Proccesing photo..." : "Preview post"}
