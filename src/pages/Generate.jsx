@@ -20,7 +20,7 @@ const Generate = () => {
   const [prompt, setPrompt] = useState("");
   const [wasGenerated, setWasGenerated] = useState(false);
   const { user } = useContext(AuthContext);
-  const { transformAspectRatio } = useCloudinary();
+  const { transformAspectRatio, uploadImage } = useCloudinary();
   const { createPost } = useGenerate();
 
   const postButtonRef = useRef(null);
@@ -31,6 +31,7 @@ const Generate = () => {
     setFileSelected({});
     setPreviewImage(null);
     postButtonRef.current.disable = false;
+    setWasGenerated(false);
   };
 
   const handleBack = () => {
@@ -96,7 +97,7 @@ const Generate = () => {
 
   const handleInspireMe = () => {
     const url = "https://api.groq.com/openai/v1/chat/completions";
-    const apiKey = import.meta.env.VITE_GROQ_CLOUD_API_KEY; // Sustituye esto por tu API Key
+    const apiKey = import.meta.env.VITE_GROQ_CLOUD_API_KEY;
 
     const requestData = {
       messages: [
@@ -154,10 +155,17 @@ const Generate = () => {
         requestOptions
       );
       const data = await response.json();
+      fetch(data.output[1])
+        .then((response) => response.blob())
+        .then(async (blob) => {
+          const file = new File([blob], "image.jpg", { type: "image/jpeg" });
+          const response = await uploadImage(file);
+          setFileSelected(response);
+          setPreviewImage(response.secure_url);
+        });
       setWasGenerated(true);
-      setPreviewImage(data.output[1]);
-    } catch (error) {
-      toast.error(error.message);
+    } catch {
+      toast.error("Ups, something went wrong. Please try again.");
     } finally {
       setProcessing(false);
     }
@@ -182,6 +190,7 @@ const Generate = () => {
           handleInspireMe={handleInspireMe}
           handleGenerate={handleGenerate}
           processing={processing}
+          wasGenerated={wasGenerated}
         />
       </div>
       <div className="inset-0 h-full w-full flex justify-center items-center right col-span-12 md:col-span-8 xl:col-span-9 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
