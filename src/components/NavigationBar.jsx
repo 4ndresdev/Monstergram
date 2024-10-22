@@ -9,11 +9,11 @@ const NavigationBar = () => {
   };
 
   return (
-    <div className="hidden md:flex md:gap-2">
+    <div className="md:flex md:gap-2">
       <Button
         size="sm"
         radius="full"
-        className="bg-orange-600 text-white"
+        className="bg-orange-600 text-white fixed bottom-0 inset-x-0 mx-auto w-40 mb-6 md:relative md:bottom-auto md:mx-0 md:mb-0"
         onClick={() => handleNavigate("/generate")}
       >
         👻 Create Spooky Image

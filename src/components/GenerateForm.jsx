@@ -10,8 +10,9 @@ const GenerateForm = ({
   handleInspireMe,
   handleGenerate,
   processing,
+  wasGenerated,
 }) => {
-  const bewitchingEnableButton = !previewImage || !prompt || processing;
+  const bewitchingEnableButton = !previewImage || !prompt || processing || wasGenerated;
   const inputsDisabled = !previewImage || processing;
   return (
     <div className="mt-5 text-lg flex flex-col gap-6">
@@ -60,6 +61,7 @@ GenerateForm.propTypes = {
   handleInspireMe: PropTypes.func.isRequired,
   handleGenerate: PropTypes.func.isRequired,
   processing: PropTypes.bool.isRequired,
+  wasGenerated: PropTypes.bool.isRequired,
 };
 
 export default GenerateForm;
